@@ -1,0 +1,21 @@
+{
+  "name": "translate",
+  "version": "1.0.0",
+  "description": "a server to translate one language to another",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "mocha ./testcases/* "
+  },
+  "author": "Gaurav",
+  "license": "ISC",
+  "dependencies": {
+    "@vitalets/google-translate-api": "^7.0.0",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "express": "^4.17.2",
+    "mocha": "^9.2.0",
+    "mongoose": "^6.2.1",
+    "nodemon": "^2.0.15"
+  }
+}
