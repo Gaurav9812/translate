@@ -77,37 +77,37 @@ module.exports.home= async function(req,res){
             s1.toLanguages.push(s._id);
             
             s1.save();
-        
-
-            languages.map(async (lan)=>{
-               try{
-                if(lan!=langs[output.from.language.iso] && lan.toLocaleUpperCase()!=req.body.to.toLocaleUpperCase())
+            
+            for(let i=0;i<languages.length;i++)
+            {
+                if(languages[i]!=langs[output.from.language.iso] && languages[i].toLocaleUpperCase()!=req.body.to.toLocaleUpperCase())
                 {
-                    let output1=await translate(content, {to:lan});
-                    let s2=await addIntoDatabase(output1.text,lan);
+                    let output1=await translate(content, {to:languages[i]});
+                    let s2=await addIntoDatabase(output1.text,languages[i]);
 
                     s=await s.populate('toLanguages');
-                    s.toLanguages.map(async (v)=>{
-                        v.toLanguages.push(s2._id);
-                        s2.toLanguages.push(v._id);
-                        await v.save();
-                    });
+                     let v=s.toLanguages;
+                     
+                    for(let j=0;j<v.length;j++)
+                    {
+                        await v[j].toLanguages.push(s2._id);
+                        await s2.toLanguages.push(v[j]._id);
+                        await v[j].save();
+                
+                    }
+                    
                     s.toLanguages.push(s2._id);
                     s2.toLanguages.push(s._id);
                     await s2.save();
                     await s.save();
                 
                 }
+
             }
-            catch(err){
-                console.log(error," ",err);
-                return res.json(500,{
-                    data:{ 
-                            message:err,
-                        }
-                });
-            }
-            })
+
+
+            
+            
         return sendResponse(res,output.text,langs[output.from.language.iso],req.body.to);
   
     }
