@@ -75,7 +75,7 @@ module.exports.home= async function(req,res){
         let s1=await addIntoDatabase(output.text,req.body.to);
             s.toLanguages.push(s1._id);
             s1.toLanguages.push(s._id);
-            s.save();
+            
             s1.save();
         
 
@@ -87,15 +87,16 @@ module.exports.home= async function(req,res){
                     let s2=await addIntoDatabase(output1.text,lan);
 
                     s=await s.populate('toLanguages');
-                    s.toLanguages.map((v)=>{
+                    s.toLanguages.map(async (v)=>{
                         v.toLanguages.push(s2._id);
                         s2.toLanguages.push(v._id);
-                        v.save();
+                        await v.save();
                     });
                     s.toLanguages.push(s2._id);
                     s2.toLanguages.push(s._id);
-                    s2.save();
-                    s.save();
+                    await s2.save();
+                    await s.save();
+                
                 }
             }
             catch(err){
@@ -107,8 +108,6 @@ module.exports.home= async function(req,res){
                 });
             }
             })
-            
-        
         return sendResponse(res,output.text,langs[output.from.language.iso],req.body.to);
   
     }
