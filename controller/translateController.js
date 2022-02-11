@@ -90,16 +90,16 @@ module.exports.home= async function(req,res){
                      
                     for(let j=0;j<v.length;j++)
                     {
-                        await v[j].toLanguages.push(s2._id);
-                        await s2.toLanguages.push(v[j]._id);
-                        await v[j].save();
+                         v[j].toLanguages.push(s2._id);
+                         s2.toLanguages.push(v[j]._id);
+                         v[j].save();
                 
                     }
                     
                     s.toLanguages.push(s2._id);
                     s2.toLanguages.push(s._id);
-                    await s2.save();
-                    await s.save();
+                     s2.save();
+                     s.save();
                 
                 }
 
